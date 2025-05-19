@@ -32,6 +32,6 @@ echo "============================"
 read operation
 
 if [ "$operation" == "1" ]; then
-    pyinstaller --onefile --name=auto-excel-schedule main.py
+    pyinstaller --onefile --name=auto_easycheck run.py
     read -p "打包完成，请按任意键继续..."
 fi
