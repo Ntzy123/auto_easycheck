@@ -75,7 +75,7 @@ if __name__ == '__main__':
         print("https://rm.vankeservice.com/api/easycheck/web/index?wkwebview=true&rurl=/nightAnswer")
         easycheck_url = str(input("请输入轻松夜答URL："))
     else:
-        easycheck_url = args.url
+        easycheck_url = str(args.url)
 
     # 初始化浏览器
     edge_options = Options()
@@ -83,7 +83,7 @@ if __name__ == '__main__':
     edge_options.add_argument("--disable-gpu")
     edge_options.add_argument("--no-sandbox")
     driver = webdriver.Edge(options=edge_options)
-    os.system("clear")
+    
     # 自动点击
     while driver:
         auto_click(driver)
