@@ -1,6 +1,6 @@
 # run.py
 
-import os, time, logging
+import os, time, logging, argparse
 from selenium import webdriver
 from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
@@ -17,6 +17,10 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-u", "--url", type=str, help="轻松夜答URL")
+args = parser.parse_args()
 
 # easycheck_url = "https://rm.vankeservice.com/easycheck/#/nightAnswer?accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBQ0NFU1NfVE9LRU4iLCJjbGllbnRJZCI6ImU4YTJmOTYzOGQ2ZTRiNDY4MjdiMmY2YzM0MjRlMDc1Iiwic2NvcGUiOiJyLXN0YWZmIiwidG9rZW4iOiIxNzAyMDcxIiwiaWF0IjoxNzQ3NjcwNDU2LCJleHAiOjE3NDgyNzUyNTZ9.2iBo1XEIqyuPdLjCrDeK2KqjZk-mT-5mQpsWDsT4ISQ"
 
@@ -61,14 +65,18 @@ def auto_click(driver):
     )
     back_button.click()
     logging.info("返回主页面")
+    time.sleep(1200)
 
 
 
 if __name__ == '__main__':
     # 输入夜答链接
-    print("https://rm.vankeservice.com/api/easycheck/web/index?wkwebview=true&rurl=/nightAnswer")
-    easycheck_url = str(input("请输入轻松夜答URL："))
-    
+    if args.url == None:
+        print("https://rm.vankeservice.com/api/easycheck/web/index?wkwebview=true&rurl=/nightAnswer")
+        easycheck_url = str(input("请输入轻松夜答URL："))
+    else:
+        easycheck_url = args.url
+
     # 初始化浏览器
     edge_options = Options()
     edge_options.add_argument("--headless")
