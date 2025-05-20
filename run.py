@@ -58,14 +58,15 @@ def auto_click(driver):
     )
     submit_button.click()
     logging.info("提交答案")
+    time.sleep(1)
 
-    # 返回
+    """# 返回
     back_button = WebDriverWait(driver, 60).until(
         EC.presence_of_element_located((By.CLASS_NAME, 'adm-nav-bar-left'))
     )
     back_button.click()
     logging.info("返回主页面")
-    time.sleep(1200)
+    time.sleep(1200)"""
 
 
 
