@@ -8,19 +8,25 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-u", "--url", type=str, help="轻松夜答URL")
+parser.add_argument("-n", "--name", type=str, default="auto_easycheck", help="日志文件名称")
+args = parser.parse_args()
+
+log_dir = "log"
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+
+log_file = os.path.join(log_dir, f"{args.name}.log")
 logging.basicConfig(
     level=logging.INFO, 
     format='%(asctime)s  [%(levelname)s]  %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
     handlers=[
-        logging.FileHandler("auto_easycheck.log", encoding="utf-8"),
+        logging.FileHandler(log_file, encoding="utf-8", mode="w"),
         logging.StreamHandler()
     ]
 )
-
-parser = argparse.ArgumentParser()
-parser.add_argument("-u", "--url", type=str, help="轻松夜答URL")
-args = parser.parse_args()
 
 # easycheck_url = "https://rm.vankeservice.com/easycheck/#/nightAnswer?accessToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBQ0NFU1NfVE9LRU4iLCJjbGllbnRJZCI6ImU4YTJmOTYzOGQ2ZTRiNDY4MjdiMmY2YzM0MjRlMDc1Iiwic2NvcGUiOiJyLXN0YWZmIiwidG9rZW4iOiIxNzAyMDcxIiwiaWF0IjoxNzQ3NjcwNDU2LCJleHAiOjE3NDgyNzUyNTZ9.2iBo1XEIqyuPdLjCrDeK2KqjZk-mT-5mQpsWDsT4ISQ"
 
