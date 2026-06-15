@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "auto-easycheck"
+version = "1.0.0"
+description = "轻松夜答自动答题工具"
+license = { text = "MIT" }
+authors = [{ name = "Ntzy123" }]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "selenium>=4.15,<5.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+]
+
+[project.scripts]
+auto-easycheck = "auto_easycheck.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+norecursedirs = [
+    ".venv",
+    "venv",
+    "dist",
+    "build",
+]
