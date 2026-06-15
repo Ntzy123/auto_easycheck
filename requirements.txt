@@ -1,1 +1,2 @@
-selenium
+pyinstaller>=6.0,<7.0
+selenium>=4.15,<5.0

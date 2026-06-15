@@ -47,8 +47,8 @@ def auto_click(driver):
             is_load = True
             logging.info("打开夜答题目")
         
-        except:
-            logging.info("没有夜答题目，刷新网页")
+        except Exception as e:
+            logging.info(f"没有夜答题目，刷新网页: {e}")
             driver.refresh()
     
     # 选择第一个选项
@@ -80,9 +80,9 @@ if __name__ == '__main__':
     # 输入夜答链接
     if args.url == None:
         print("https://rm.vankeservice.com/api/easycheck/web/index?wkwebview=true&rurl=/nightAnswer")
-        easycheck_url = str(input("请输入轻松夜答URL："))
+        easycheck_url = input("请输入轻松夜答URL：")
     else:
-        easycheck_url = str(args.url)
+        easycheck_url = args.url
 
     # 初始化浏览器
     edge_options = Options()
@@ -91,10 +91,16 @@ if __name__ == '__main__':
     edge_options.add_argument("--no-sandbox")
     driver = webdriver.Edge(options=edge_options)
     
-    # 自动点击
-    while driver:
-        auto_click(driver)
-        time.sleep(60)
-
-    time.sleep(2)
-    driver.quit()
+    try:
+        # 自动点击
+        while True:
+            auto_click(driver)
+            time.sleep(60)
+    except KeyboardInterrupt:
+        logging.info("用户手动终止")
+    except Exception as e:
+        logging.exception("运行异常")
+    finally:
+        time.sleep(2)
+        driver.quit()
+        logging.info("浏览器已关闭")

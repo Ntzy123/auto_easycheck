@@ -39,6 +39,9 @@ if errorlevel 2 goto exit
 if errorlevel 1 goto run_command
 
 :run_command
+
+for /f %%i in ('powershell -command "Get-Date -Format yyyyMMddHHmmss"') do set t=%%i
+
 pyinstaller --onefile --name=auto_easycheck run.py
     echo 打包完成，请按任意键继续...
     pause >nul
@@ -48,4 +51,4 @@ exit
     rem
 exit
 
-REM python main.py
+REM python run.py
