@@ -1,8 +1,11 @@
 """轻松夜答自动答题核心逻辑"""
 
+import os
 import time
 import logging
+from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.edge.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -46,3 +49,57 @@ def auto_click(driver, url: str):
     submit_button.click()
     logging.info("提交答案")
     time.sleep(1)
+
+
+def setup_logging(name: str = "auto_easycheck") -> str:
+    """配置日志"""
+    log_dir = "log"
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+
+    log_file = os.path.join(log_dir, f"{name}.log")
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s  [%(levelname)s]  %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[
+            logging.FileHandler(log_file, encoding="utf-8", mode="w"),
+            logging.StreamHandler(),
+        ],
+    )
+    return log_file
+
+
+def create_driver() -> webdriver.Edge:
+    """创建 headless Edge 浏览器实例"""
+    edge_options = Options()
+    edge_options.add_argument("--headless")
+    edge_options.add_argument("--disable-gpu")
+    edge_options.add_argument("--no-sandbox")
+    return webdriver.Edge(options=edge_options)
+
+
+def run(url: str, log_name: str = "auto_easycheck") -> None:
+    """一键启动自动答题（推荐接口）
+
+    直接传入 url 即可开始答题循环，日志默认以 auto_easycheck 命名。
+
+    Args:
+        url: 轻松夜答网页 URL
+        log_name: 日志文件名称（不含路径），默认为 "auto_easycheck"
+    """
+    setup_logging(log_name)
+    driver = create_driver()
+
+    try:
+        while True:
+            auto_click(driver, url)
+            time.sleep(60)
+    except KeyboardInterrupt:
+        logging.info("用户手动终止")
+    except Exception:
+        logging.exception("运行异常")
+    finally:
+        time.sleep(2)
+        driver.quit()
+        logging.info("浏览器已关闭")
